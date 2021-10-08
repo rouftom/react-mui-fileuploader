@@ -46,15 +46,6 @@ function App() {
       leftLabel="or"
       rightLabel="to select files"
       buttonLabel="click here"
-      options={{
-        multiFile: true,
-        maxFileSize: 5,
-        maxUploadFiles: 0,
-        filesContainerHeight: 357,
-        maxFilesContainerHeight: 357,
-        imageSrc: '',
-        allowedExtensions: ['jpg', 'jpeg'],
-      }}
       maxFileSize={10}
       maxUploadFiles={0}
       maxFilesContainerHeight={357}
