@@ -25,7 +25,7 @@ React mui fileuploader is a react component based on @mui v5 that allows you to 
 ```javascript
 import React from 'react'
 import ReactDOM from 'react-dom'
-import Scheduler from "react-mui-fileuploader"
+import FileUpload from "react-mui-fileuploader"
 
 function App() {
   

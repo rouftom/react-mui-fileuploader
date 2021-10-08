@@ -39,7 +39,7 @@ MODE.map((m) => {
         plugins: ['@babel/transform-runtime', "@babel/plugin-proposal-optional-chaining"],
         babelHelpers: 'runtime'
       }),
-      svg(),
+      svg({base64: true}),
       // this adds sourcemaps
       //sourcemaps(),
       // this adds support for styles
