@@ -154,7 +154,8 @@
         allowedExtensions = props.allowedExtensions,
         containerProps = props.containerProps,
         bannerProps = props.bannerProps,
-        imageSrc = props.imageSrc;
+        imageSrc = props.imageSrc,
+        imageDimension = props.imageDimension;
 
     var _useState = React.useState(),
         _useState2 = _slicedToArray__default["default"](_useState, 2),
@@ -405,16 +406,16 @@
     }, /*#__PURE__*/React__default["default"].createElement(material.Hidden, {
       smDown: true
     }, /*#__PURE__*/React__default["default"].createElement("img", {
-      alt: "",
-      width: 120,
-      height: 120,
+      alt: "loading image...",
+      width: imageDimension[0] || 120,
+      height: imageDimension[1] || 120,
       src: imageSrc || uploadImage
     })), /*#__PURE__*/React__default["default"].createElement(material.Hidden, {
       smUp: true
     }, /*#__PURE__*/React__default["default"].createElement("img", {
-      alt: "",
-      width: 128,
-      height: 128,
+      alt: "loading image...",
+      width: imageDimension[2] || 128,
+      height: imageDimension[3] || 128,
       src: imageSrc || uploadImage
     }))), /*#__PURE__*/React__default["default"].createElement(material.Grid, {
       item: true,
@@ -520,7 +521,9 @@
     errorSizeMessage: PropTypes__default["default"].string,
     allowedExtensions: PropTypes__default["default"].array,
     onError: PropTypes__default["default"].func,
-    onFilesChange: PropTypes__default["default"].func
+    onFilesChange: PropTypes__default["default"].func,
+    imageSrc: PropTypes__default["default"].string,
+    imageDimension: PropTypes__default["default"].array
   };
   FileUpload.defaultProps = {
     multiFile: true,
@@ -530,7 +533,8 @@
     leftLabel: "or",
     rightLabel: "to select files",
     buttonLabel: "click here",
-    maxFilesContainerHeight: 300
+    maxFilesContainerHeight: 300,
+    imageDimension: [120, 120, 128, 128]
   };
 
   return FileUpload;

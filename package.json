@@ -1,6 +1,6 @@
 {
   "name": "react-mui-fileuploader",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "🗃️ React mui fileuploader is a react component based on @mui v5 that allows you to upload files with an awesome ui component",
   "main": "dist/index.esm.js",
   "scripts": {

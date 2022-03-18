@@ -4,7 +4,7 @@ import {styled, ThemeProvider} from "@mui/system"
 import { Button, Grid, Typography, Paper, useTheme, Box, Hidden, Alert
 } from '@mui/material'
 import FileAttachment from "./FileAttachment.jsx"
-import uploadImage from '../public/Files And Folder_Two Color_2.svg'
+import uploadImage from '../public/Files_And_Folder_Two_Color_2.svg'
 
 const StyledContainer = styled(Typography)(({ theme }) => ({
   "&::-webkit-scrollbar": {
@@ -52,7 +52,8 @@ function FileUpload(props) {
     allowedExtensions,
     containerProps,
     bannerProps,
-    imageSrc
+    imageSrc,
+    imageDimension
   } = props
   
   const [error, setError] = useState()
@@ -254,17 +255,17 @@ function FileUpload(props) {
             <Grid item xs={12} sm={3} md={4} sx={{textAlign: 'center'}}>
               <Hidden smDown>
                 <img
-                  alt=""
-                  width={120}
-                  height={120}
+                  alt="loading image..."
+                  width={imageDimension[0] || 120}
+                  height={imageDimension[1] || 120}
                   src={imageSrc || uploadImage}
                 />
               </Hidden>
               <Hidden smUp>
                 <img
-                  alt=""
-                  width={128}
-                  height={128}
+                  alt="loading image..."
+                  width={imageDimension[2] || 128}
+                  height={imageDimension[3] || 128}
                   src={imageSrc || uploadImage}
                 />
               </Hidden>
@@ -375,7 +376,9 @@ FileUpload.propTypes = {
   errorSizeMessage: PropTypes.string,
   allowedExtensions: PropTypes.array,
   onError: PropTypes.func,
-  onFilesChange: PropTypes.func
+  onFilesChange: PropTypes.func,
+  imageSrc: PropTypes.string,
+  imageDimension: PropTypes.array
 }
 
 FileUpload.defaultProps = {
@@ -386,7 +389,8 @@ FileUpload.defaultProps = {
   leftLabel: "or",
   rightLabel: "to select files",
   buttonLabel: "click here",
-  maxFilesContainerHeight: 300
+  maxFilesContainerHeight: 300,
+  imageDimension: [120, 120, 128, 128]
 }
 
 export default FileUpload
