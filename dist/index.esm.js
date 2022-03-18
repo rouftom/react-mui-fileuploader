@@ -149,7 +149,8 @@ function FileUpload(props) {
       allowedExtensions = props.allowedExtensions,
       containerProps = props.containerProps,
       bannerProps = props.bannerProps,
-      imageSrc = props.imageSrc;
+      imageSrc = props.imageSrc,
+      imageDimension = props.imageDimension;
 
   var _useState = useState(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -400,16 +401,16 @@ function FileUpload(props) {
   }, /*#__PURE__*/React.createElement(Hidden, {
     smDown: true
   }, /*#__PURE__*/React.createElement("img", {
-    alt: "",
-    width: 120,
-    height: 120,
+    alt: "loading image...",
+    width: imageDimension[0] || 120,
+    height: imageDimension[1] || 120,
     src: imageSrc || uploadImage
   })), /*#__PURE__*/React.createElement(Hidden, {
     smUp: true
   }, /*#__PURE__*/React.createElement("img", {
-    alt: "",
-    width: 128,
-    height: 128,
+    alt: "loading image...",
+    width: imageDimension[2] || 128,
+    height: imageDimension[3] || 128,
     src: imageSrc || uploadImage
   }))), /*#__PURE__*/React.createElement(Grid, {
     item: true,
@@ -515,7 +516,9 @@ FileUpload.propTypes = {
   errorSizeMessage: PropTypes.string,
   allowedExtensions: PropTypes.array,
   onError: PropTypes.func,
-  onFilesChange: PropTypes.func
+  onFilesChange: PropTypes.func,
+  imageSrc: PropTypes.string,
+  imageDimension: PropTypes.array
 };
 FileUpload.defaultProps = {
   multiFile: true,
@@ -525,7 +528,8 @@ FileUpload.defaultProps = {
   leftLabel: "or",
   rightLabel: "to select files",
   buttonLabel: "click here",
-  maxFilesContainerHeight: 300
+  maxFilesContainerHeight: 300,
+  imageDimension: [120, 120, 128, 128]
 };
 
 export { FileUpload as default };

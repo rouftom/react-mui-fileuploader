@@ -56,6 +56,7 @@ function App() {
       imageSrc={'path/to/custom/image'}
       bannerProps={{ elevation: 0, variant: "outlined" }}
       containerProps={{ elevation: 0, variant: "outlined" }}
+      imageDimension={[64,64]}
     />
   )
 }
