@@ -3,9 +3,8 @@ import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
 import _slicedToArray from '@babel/runtime/helpers/slicedToArray';
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { styled, ThemeProvider } from '@mui/system';
-import { Paper, Typography, Avatar, IconButton, useTheme as useTheme$1, Box, Grid, Hidden, Button, Alert } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box, Avatar, Typography, IconButton, Paper, Grid, Hidden, Button, Alert } from '@mui/material';
+import { useTheme, styled } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined';
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline';
@@ -40,16 +39,16 @@ function FileAttachment(props) {
     });
   }
 
-  return /*#__PURE__*/React.createElement(Paper, {
-    elevation: 0,
-    variant: "outlined",
+  return /*#__PURE__*/React.createElement(Box, {
     sx: {
+      mb: 0,
       display: 'flex',
-      mb: 1,
-      alignItems: 'center'
+      alignItems: 'center',
+      '&:nth-of-type(even)': {
+        backgroundColor: theme.palette.action.hover
+      }
     }
-  }, /*#__PURE__*/React.createElement(Typography, {
-    component: "div",
+  }, /*#__PURE__*/React.createElement(Box, {
     sx: {
       display: 'flex',
       flexGrow: 1,
@@ -61,10 +60,10 @@ function FileAttachment(props) {
     variant: "rounded",
     sx: {
       m: .5,
+      width: 32,
+      height: 32,
       display: 'flex',
-      background: 'transparent',
-      width: theme.spacing(5),
-      height: theme.spacing(5)
+      background: 'transparent'
     }
   }, icon), /*#__PURE__*/React.createElement(Typography, {
     component: "div",
@@ -124,32 +123,33 @@ var StyledContainer = styled(Typography)(function (_ref) {
 });
 /**
  * @name FileUpload
- * @description
- * @param props
- * @returns
+ * @description Upload file component wrapper
+ * @param props object
+ * @returns React.Component
  */
 
 function FileUpload(props) {
-  var theme = useTheme$1();
-  var disabled = props.disabled,
-      multiFile = props.multiFile,
-      title = props.title,
+  var title = props.title,
       header = props.header,
+      onError = props.onError,
+      disabled = props.disabled,
+      imageSrc = props.imageSrc,
+      multiFile = props.multiFile,
       leftLabel = props.leftLabel,
       rightLabel = props.rightLabel,
       buttonLabel = props.buttonLabel,
+      maxFileSize = props.maxFileSize,
+      bannerProps = props.bannerProps,
       defaultFiles = props.defaultFiles,
-      onError = props.onError,
-      errorSizeMessage = props.errorSizeMessage,
       onFilesChange = props.onFilesChange,
       maxUploadFiles = props.maxUploadFiles,
-      maxFileSize = props.maxFileSize,
-      filesContainerHeight = props.filesContainerHeight,
-      maxFilesContainerHeight = props.maxFilesContainerHeight,
-      allowedExtensions = props.allowedExtensions,
       containerProps = props.containerProps,
-      bannerProps = props.bannerProps,
-      imageSrc = props.imageSrc;
+      errorSizeMessage = props.errorSizeMessage,
+      allowedExtensions = props.allowedExtensions,
+      buttonRemoveLabel = props.buttonRemoveLabel,
+      filesContainerHeight = props.filesContainerHeight,
+      maxFilesContainerHeight = props.maxFilesContainerHeight;
+  var theme = useTheme();
 
   var _useState = useState(),
       _useState2 = _slicedToArray(_useState, 2),
@@ -193,14 +193,11 @@ function FileUpload(props) {
     }
 
     if (maxUploadFiles) {
-      var _filesTab;
-
-      if (maxUploadFiles - (files.length + ((_filesTab = filesTab) === null || _filesTab === void 0 ? void 0 : _filesTab.length)) <= 0) {
+      if (maxUploadFiles - files.length <= 0) {
         setError("You cannot attach more than ".concat(maxUploadFiles, " files"));
         return onError("You cannot attach more than ".concat(maxUploadFiles, " files"));
       }
-    } //
-
+    }
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       var _event$dataTransfer;
@@ -209,7 +206,7 @@ function FileUpload(props) {
         var _file$type;
 
         var file = filesTab[i];
-        var extension = file === null || file === void 0 ? void 0 : (_file$type = file.type) === null || _file$type === void 0 ? void 0 : _file$type.split('/')[1]; //
+        var extension = file === null || file === void 0 ? void 0 : (_file$type = file.type) === null || _file$type === void 0 ? void 0 : _file$type.split('/')[1];
 
         if (maxFileSize && maxFileSize > 0) {
           if (file.size > 1024 * 1024 * maxFileSize) {
@@ -218,8 +215,7 @@ function FileUpload(props) {
             onError(message);
             return "break";
           }
-        } //
-
+        }
 
         if ((allowedExtensions === null || allowedExtensions === void 0 ? void 0 : allowedExtensions.length) > 0) {
           var isAllowed = allowedExtensions.findIndex(function (ext) {
@@ -233,18 +229,17 @@ function FileUpload(props) {
             onError(_message);
             return "break";
           }
-        } //
-
+        }
 
         var reader = new FileReader();
         reader.addEventListener("load", function () {
           var obj = {
-            lastModified: file.lastModified,
             name: file.name,
             size: file.size,
             path: this.result,
-            extension: extension === null || extension === void 0 ? void 0 : extension.toLowerCase(),
-            contentType: file.type
+            contentType: file.type,
+            lastModified: file.lastModified,
+            extension: extension === null || extension === void 0 ? void 0 : extension.toLowerCase()
           };
           files.push(obj);
           setFiles(_toConsumableArray(files));
@@ -252,8 +247,8 @@ function FileUpload(props) {
         reader.readAsDataURL(file);
       };
 
-      for (var i = 0; i < ((_filesTab2 = filesTab) === null || _filesTab2 === void 0 ? void 0 : _filesTab2.length); i++) {
-        var _filesTab2;
+      for (var i = 0; i < ((_filesTab = filesTab) === null || _filesTab === void 0 ? void 0 : _filesTab.length); i++) {
+        var _filesTab;
 
         var _ret = _loop(i);
 
@@ -280,7 +275,10 @@ function FileUpload(props) {
       return onFilesChange([]);
     }
 
-    if (index < 0 || index > files.length - 1) return;
+    if (index < 0 || index > files.length - 1) {
+      return;
+    }
+
     files === null || files === void 0 ? void 0 : files.splice(index, 1);
     setFiles(_toConsumableArray(files));
   };
@@ -349,12 +347,9 @@ function FileUpload(props) {
       onFilesChange(_toConsumableArray(files));
     } // eslint-disable-next-line
 
-  }, [files]); //
-
+  }, [files]);
   var background = animate ? theme.palette.secondary.light : theme.palette.primary.light;
-  return /*#__PURE__*/React.createElement(ThemeProvider, {
-    theme: theme
-  }, /*#__PURE__*/React.createElement(Paper, _extends({
+  return /*#__PURE__*/React.createElement(Paper, _extends({
     sx: {
       p: 1
     },
@@ -498,7 +493,7 @@ function FileUpload(props) {
     size: "small",
     disabled: disabled,
     onClick: handleRemoveFile
-  }, "Remove all")))));
+  }, buttonRemoveLabel || 'Remove all'))));
 }
 
 FileUpload.propTypes = {

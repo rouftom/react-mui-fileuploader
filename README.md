@@ -46,6 +46,7 @@ function App() {
       leftLabel="or"
       rightLabel="to select files"
       buttonLabel="click here"
+      buttonRemoveLabel="Remove all"
       maxFileSize={10}
       maxUploadFiles={0}
       maxFilesContainerHeight={357}
@@ -81,6 +82,8 @@ ReactDOM.render(<App />, document.querySelector('#root'))
 
     Do you like this library ? Buy me a coffee or support me with a star on Github
 
+<a href="https://www.buymeacoffee.com/Lnp9rkM" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 40px !important;width: 180px !important;" ></a>
+
 * Btc address: `bc1qettgagenn9nc8ks7ghntjfme96yvvkfhntk774`
 
 * Eth address: `0xB0413d8D0336E263e289A915c383e152155881E0`
@@ -93,7 +96,7 @@ ReactDOM.render(<App />, document.querySelector('#root'))
 
 MIT License
 
-Copyright (c) 2021 rouftom
+Copyright (c) 2022 rouftom
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,8 +1,9 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react'
+import React, { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import {styled, ThemeProvider} from "@mui/system"
-import { Button, Grid, Typography, Paper, useTheme, Box, Hidden, Alert
+import { 
+  Button, Grid, Typography, Alert, Paper, Box, Hidden,
 } from '@mui/material'
+import { useTheme, styled } from '@mui/material/styles'
 import FileAttachment from "./FileAttachment.jsx"
 import uploadImage from '../public/Files And Folder_Two Color_2.svg'
 
@@ -27,33 +28,34 @@ const StyledContainer = styled(Typography)(({ theme }) => ({
 
 /**
  * @name FileUpload
- * @description
- * @param props
- * @returns
+ * @description Upload file component wrapper
+ * @param props object
+ * @returns React.Component
  */
 function FileUpload(props) {
-  const theme = useTheme()
   const {
-    disabled,
-    multiFile,
     title,
     header,
+    onError,
+    disabled,
+    imageSrc,
+    multiFile,
     leftLabel,
     rightLabel,
     buttonLabel,
+    maxFileSize,
+    bannerProps,
     defaultFiles,
-    onError,
-    errorSizeMessage,
     onFilesChange,
     maxUploadFiles,
-    maxFileSize,
-    filesContainerHeight,
-    maxFilesContainerHeight,
-    allowedExtensions,
     containerProps,
-    bannerProps,
-    imageSrc
+    errorSizeMessage,
+    allowedExtensions,
+    buttonRemoveLabel,
+    filesContainerHeight,
+    maxFilesContainerHeight
   } = props
+  const theme = useTheme()
   
   const [error, setError] = useState()
   const [animate, setAnimate] = useState()
@@ -79,27 +81,29 @@ function FileUpload(props) {
       return onError(`Empty file input`)
     }
     if (maxUploadFiles) {
-      if (maxUploadFiles - (files.length + filesTab?.length) <= 0) {
+      if (maxUploadFiles - files.length <= 0) {
         setError(`You cannot attach more than ${maxUploadFiles} files`)
-        return onError(`You cannot attach more than ${maxUploadFiles} files`)
+        return onError(
+          `You cannot attach more than ${maxUploadFiles} files`
+        )
       }
     }
-    
-    //
+
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       for (let i = 0; i < filesTab?.length; i++) {
         let file = filesTab[i]
         let extension = file?.type?.split('/')[1]
-        //
         if (maxFileSize && maxFileSize > 0) {
           if (file.size > (1024 * 1024 * maxFileSize)) {
-            let message = errorSizeMessage || `The size of files cannot exceed ${maxFileSize}Mb`
+            let message = (
+              errorSizeMessage || 
+              `The size of files cannot exceed ${maxFileSize}Mb`
+            )
             setError(message)
             onError(message)
             break
           }
         }
-        //
         if (allowedExtensions?.length > 0) {
           let isAllowed = allowedExtensions
             .findIndex(
@@ -112,19 +116,18 @@ function FileUpload(props) {
             break
           }
         }
-        //
         let reader = new FileReader()
         reader.addEventListener("load", function () {
           let obj = {
-            lastModified: file.lastModified,
             name: file.name,
             size: file.size,
             path: this.result,
-            extension: extension?.toLowerCase(),
             contentType: file.type,
+            lastModified: file.lastModified,
+            extension: extension?.toLowerCase()
           }
           files.push(obj)
-          setFiles([...files])
+          setFiles([ ...files ])
         }, false)
         reader.readAsDataURL(file)
       }
@@ -145,7 +148,9 @@ function FileUpload(props) {
       setFiles([])
       return onFilesChange([])
     }
-    if (index < 0 || index > files.length-1) return
+    if (index < 0 || index > files.length-1) {
+      return
+    }
     files?.splice(index, 1)
     setFiles([...files])
   }
@@ -211,153 +216,164 @@ function FileUpload(props) {
   }, [defaultFiles])
   
   useEffect(() => {
-    if (files && onFilesChange) { onFilesChange([...files]) }
+    if (files && onFilesChange) { 
+      onFilesChange([...files])
+    }
     // eslint-disable-next-line
   }, [files])
   
-  //
-  let background = animate ? theme.palette.secondary.light : theme.palette.primary.light
+  const background = animate ? 
+    theme.palette.secondary.light : theme.palette.primary.light
   
   return (
-    <ThemeProvider theme={theme}>
-      <Paper
-        sx={{p: 1}}
-        elevation={0}
-        ref={filesCardRef}
-        variant="outlined"
-        {...containerProps}
+    <Paper
+      sx={{ p: 1 }}
+      elevation={0}
+      ref={filesCardRef}
+      variant="outlined"
+      {...containerProps}
+    >
+      <Typography
+        gutterBottom
+        component="div"
+        color="textSecondary"
+        sx={{ display: 'flex' }}
       >
-        <Typography
-          gutterBottom
-          component="div"
-          color="textSecondary"
-          sx={{ display: 'flex' }}
-        >
-          <Box sx={{ flexGrow: 1, fontSize: 12 }}>{title}</Box>
-          {files?.length > 0 &&
-          <Box sx={{fontSize: 12}}>
-            {files.length}
-            {maxUploadFiles > 0 && `/${maxUploadFiles}`} file{files?.length > 0 && 's'} joined
-          </Box>}
-        </Typography>
-        <Paper
-          elevation={0}
-          sx={{ p: 1, transition: 500, background: background }}
-          {...bannerProps}
-        >
-          <Grid
-            container
-            spacing={2}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Grid item xs={12} sm={3} md={4} sx={{textAlign: 'center'}}>
-              <Hidden smDown>
-                <img
-                  alt=""
-                  width={120}
-                  height={120}
-                  src={imageSrc || uploadImage}
-                />
-              </Hidden>
-              <Hidden smUp>
-                <img
-                  alt=""
-                  width={128}
-                  height={128}
-                  src={imageSrc || uploadImage}
-                />
-              </Hidden>
-            </Grid>
-            <Grid
-              item
-              xs={12} sm={9} md={8}
-              sx={{color: "#fff", textAlign: 'center'}}
-            >
-              <Hidden smDown>
-                <Typography variant="h5"><b>{header}</b></Typography>
-              </Hidden>
-              <Hidden smUp>
-                <Typography variant="h6"><b>{header}</b></Typography>
-              </Hidden>
-              <Typography variant="caption">
-                {leftLabel}
-                <Button
-                  size="small"
-                  color="secondary"
-                  variant="outlined"
-                  disabled={disabled}
-                  sx={{
-                    m: .5,
-                    color: theme.palette.grey["50"],
-                    borderColor: theme.palette.grey["50"],
-                    '&:hover': { borderColor: theme.palette.grey["50"] }
-                  }}
-                  onClick={() => document.getElementById('input-files').click()}
-                >
-                  {buttonLabel}
-                </Button>
-                {rightLabel}
-              </Typography>
-              <input
-                type="file"
-                accept={`*/*`}
-                id="input-files"
-                multiple={multiFile}
-                onChange={renderPreview}
-                style={{display: "none"}}
-              />
-            </Grid>
-          </Grid>
-        </Paper>
-        {error &&
-        <Alert color="error" severity="error" sx={{ mt: 1 }}>
-          {error}
-        </Alert>}
+        <Box sx={{ flexGrow: 1, fontSize: 12 }}>
+          {title}
+        </Box>
         {files?.length > 0 &&
-        <>
-          <StyledContainer
-            component="div"
-            sx={{
-              overflowY: "auto",
-              mt: 2, mr: -1, pr: 1,
-              height: filesContainerHeight,
-              maxHeight: maxFilesContainerHeight
-            }}
+        <Box sx={{ fontSize: 12 }}>
+          {files.length}
+          {maxUploadFiles > 0 &&
+          `/${maxUploadFiles}`} file{files?.length > 0 && 's'} joined
+        </Box>}
+      </Typography>
+      <Paper
+        elevation={0}
+        sx={{ p: 1, transition: 500, background }}
+        {...bannerProps}
+      >
+        <Grid
+          container
+          spacing={2}
+          alignItems="center"
+          justifyContent="center"
+        >
+          <Grid 
+            item 
+            xs={12} sm={3} md={4} 
+            sx={{ textAlign: 'center' }}
           >
-            {
-              files?.map((file, index) => {
-                let size = file.size
-                if (size > oneMega) {
-                  size = (file.size/oneMega).toFixed(2) + ' Mb'
-                } else {
-                  size = (file.size/1024).toFixed(2) + ' Kb'
-                }
-                return (
-                  <FileAttachment
-                    file={file}
-                    size={size}
-                    index={index}
-                    disabled={disabled}
-                    key={`upload-file--${index}`}
-                    hanfleRemoveFile={handleRemoveFile}
-                  />
-                )
-              })
-            }
-          </StyledContainer>
-          <Typography component="div" align="right" sx={{mt: 1}}>
-            <Button
-              size="small"
-              disabled={disabled}
-              onClick={handleRemoveFile}
-            >
-              Remove all
-            </Button>
-          </Typography>
-        </>}
+            <Hidden smDown>
+              <img
+                alt=""
+                width={120}
+                height={120}
+                src={imageSrc || uploadImage}
+              />
+            </Hidden>
+            <Hidden smUp>
+              <img
+                alt=""
+                width={128}
+                height={128}
+                src={imageSrc || uploadImage}
+              />
+            </Hidden>
+          </Grid>
+          <Grid
+            item
+            xs={12} sm={9} md={8}
+            sx={{ color: "#fff", textAlign: 'center' }}
+          >
+            <Hidden smDown>
+              <Typography variant="h5">
+                <b>{header}</b>
+              </Typography>
+            </Hidden>
+            <Hidden smUp>
+              <Typography variant="h6">
+                <b>{header}</b>
+              </Typography>
+            </Hidden>
+            <Typography variant="caption">
+              {leftLabel}
+              <Button
+                size="small"
+                color="secondary"
+                variant="outlined"
+                disabled={disabled}
+                sx={{
+                  m: .5,
+                  color: theme.palette.grey["50"],
+                  borderColor: theme.palette.grey["50"],
+                  '&:hover': {
+                    borderColor: theme.palette.grey["50"]
+                  }
+                }}
+                onClick={() => document.getElementById('input-files').click()}
+              >
+                {buttonLabel}
+              </Button>
+              {rightLabel}
+            </Typography>
+            <input
+              type="file"
+              accept={`*/*`}
+              id="input-files"
+              multiple={multiFile}
+              onChange={renderPreview}
+              style={{display: "none"}}
+            />
+          </Grid>
+        </Grid>
       </Paper>
-    </ThemeProvider>
+      {error &&
+      <Alert color="error" severity="error" sx={{ mt: 1 }}>
+        {error}
+      </Alert>}
+      {files?.length > 0 &&
+      <>
+        <StyledContainer
+          component="div"
+          sx={{
+            overflowY: "auto",
+            mt: 2, mr: -1, pr: 1,
+            height: filesContainerHeight,
+            maxHeight: maxFilesContainerHeight
+          }}
+        >
+          {files?.map((file, index) => {
+              let size = file.size
+              if (size > oneMega) {
+                size = (file.size/oneMega).toFixed(2) + ' Mb'
+              } else {
+                size = (file.size/1024).toFixed(2) + ' Kb'
+              }
+              return (
+                <FileAttachment
+                  file={file}
+                  size={size}
+                  index={index}
+                  disabled={disabled}
+                  key={`upload-file--${index}`}
+                  hanfleRemoveFile={handleRemoveFile}
+                />
+              )
+            })}
+        </StyledContainer>
+        <Typography component="div" align="right" sx={{ mt: 1 }}>
+          <Button
+            size="small"
+            disabled={disabled}
+            onClick={handleRemoveFile}
+          >
+            {buttonRemoveLabel || 'Remove all'}
+          </Button>
+        </Typography>
+      </>}
+  </Paper>
   )
 }
 

@@ -5,11 +5,9 @@ const autoprefixer = require('autoprefixer')
 
 // the entry point for the library
 const input = 'src/index.js'
-
-//
+let config = []
 let MODE = [{ fomart: 'esm' }, { fomart: 'umd' }]
 
-let config = []
 
 MODE.map((m) => {
   let conf = {
@@ -36,7 +34,10 @@ MODE.map((m) => {
       // these are babel comfigurations
       babel({
         exclude: 'node_modules/**',
-        plugins: ['@babel/transform-runtime', "@babel/plugin-proposal-optional-chaining"],
+        plugins: [
+          '@babel/transform-runtime', 
+          "@babel/plugin-proposal-optional-chaining"
+        ],
         babelHelpers: 'runtime'
       }),
       svg({base64: true}),
@@ -55,6 +56,4 @@ MODE.map((m) => {
   config.push(conf)
 })
 
-export default [
-  ...config,
-]
+export default [ ...config ]
