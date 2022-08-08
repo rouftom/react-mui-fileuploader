@@ -64,13 +64,14 @@ function FileUpload(props) {
     placeholderImageDimension
   } = props
   const theme = useTheme()
-  
+
   const [error, setError] = useState()
   const [animate, setAnimate] = useState()
   const [files, setFiles] = useState([])
-  
+
   const oneMega = 1024 * 1024
   const filesCardRef = useRef()
+  const inputRef = useRef()
 
   let imageDimension = { width: 128, height: 128 }
   if (useMediaQuery(theme.breakpoints.up('xs')) && placeholderImageDimension?.xs) {
@@ -85,7 +86,7 @@ function FileUpload(props) {
   if (useMediaQuery(theme.breakpoints.up('lg')) && placeholderImageDimension?.lg) {
     imageDimension = placeholderImageDimension.lg
   }
-  
+
   /**
    * @name renderPreview
    * @description
@@ -118,7 +119,7 @@ function FileUpload(props) {
         if (maxFileSize && maxFileSize > 0) {
           if (file.size > (1024 * 1024 * maxFileSize)) {
             let message = (
-              errorSizeMessage || 
+              errorSizeMessage ||
               `The size of files cannot exceed ${maxFileSize}Mb`
             )
             setError(message)
@@ -156,7 +157,7 @@ function FileUpload(props) {
       event?.dataTransfer?.clearData()
     }
   }
-  
+
   /**
    * @name handleRemoveFile
    * @description
@@ -165,7 +166,9 @@ function FileUpload(props) {
    */
   const handleRemoveFile = (index) => {
     setError(null)
-    document.getElementById('input-files').value = ''
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
     if (typeof index !== 'number') {
       setFiles([])
       return onFilesChange([])
@@ -176,7 +179,7 @@ function FileUpload(props) {
     files?.splice(index, 1)
     setFiles([...files])
   }
-  
+
   /**
    * @name handleDragEnter
    * @description
@@ -186,7 +189,7 @@ function FileUpload(props) {
     event.preventDefault()
     setAnimate(true)
   }, [])
-  
+
   /**
    * @name handleDragOver
    * @description
@@ -197,7 +200,7 @@ function FileUpload(props) {
     event.preventDefault()
     setAnimate(true)
   }, [])
-  
+
   /**
    * @name handleDrop
    * @description
@@ -209,16 +212,16 @@ function FileUpload(props) {
     let dt = event.dataTransfer
     if (dt.files) renderPreview(event, dt.files)
   }, [])
-  
+
   /**
    * @name handleDragLeave
    * @description
    * @returns void
    */
-  const handleDragLeave = useCallback((event) => {
+  const handleDragLeave = useCallback(() => {
     setAnimate(false)
   }, [])
-  
+
   useEffect(() => {
     let dragDiv = filesCardRef.current
     if (dragDiv && !disabled) {
@@ -229,24 +232,24 @@ function FileUpload(props) {
     }
     // eslint-disable-next-line
   }, [filesCardRef.current])
-  
+
   useEffect(() => {
     if (defaultFiles?.length > 0) {
       setFiles(defaultFiles)
     }
     // eslint-disable-next-line
   }, [defaultFiles])
-  
+
   useEffect(() => {
-    if (files && onFilesChange) { 
+    if (files && onFilesChange) {
       onFilesChange([...files])
     }
     // eslint-disable-next-line
   }, [files])
-  
-  const background = animate ? 
+
+  const background = animate ?
     theme.palette.secondary.light : theme.palette.primary.light
-  
+
   return (
     <Paper
       sx={{ p: 1 }}
@@ -282,9 +285,9 @@ function FileUpload(props) {
           alignItems="center"
           justifyContent="center"
         >
-          <Grid 
-            item 
-            xs={12} sm={3} md={4} 
+          <Grid
+            item
+            xs={12} sm={3} md={4}
             sx={{ textAlign: 'center' }}
           >
             <img
@@ -324,7 +327,7 @@ function FileUpload(props) {
                     borderColor: theme.palette.grey["50"]
                   }
                 }}
-                onClick={() => document.getElementById('input-files').click()}
+                onClick={() => inputRef.current?.click()}
               >
                 {buttonLabel}
               </Button>
@@ -333,7 +336,7 @@ function FileUpload(props) {
             <input
               type="file"
               accept={`*/*`}
-              id="input-files"
+              ref={inputRef}
               multiple={multiFile}
               onChange={renderPreview}
               style={{display: "none"}}
