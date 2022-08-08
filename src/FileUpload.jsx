@@ -63,6 +63,7 @@ function FileUpload(props) {
   
   const oneMega = 1024 * 1024
   const filesCardRef = useRef()
+  const inputRef = useRef()
   
   /**
    * @name renderPreview
@@ -143,7 +144,9 @@ function FileUpload(props) {
    */
   const handleRemoveFile = (index) => {
     setError(null)
-    document.getElementById('input-files').value = ''
+    if (inputRef.current) {
+      inputRef.current.value = ''
+    }
     if (typeof index !== 'number') {
       setFiles([])
       return onFilesChange([])
@@ -193,7 +196,7 @@ function FileUpload(props) {
    * @description
    * @returns void
    */
-  const handleDragLeave = useCallback((event) => {
+  const handleDragLeave = useCallback(() => {
     setAnimate(false)
   }, [])
   
@@ -312,7 +315,7 @@ function FileUpload(props) {
                     borderColor: theme.palette.grey["50"]
                   }
                 }}
-                onClick={() => document.getElementById('input-files').click()}
+                onClick={() => inputRef.current?.click()}
               >
                 {buttonLabel}
               </Button>
@@ -321,7 +324,7 @@ function FileUpload(props) {
             <input
               type="file"
               accept={`*/*`}
-              id="input-files"
+              ref={inputRef}
               multiple={multiFile}
               onChange={renderPreview}
               style={{display: "none"}}
