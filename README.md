@@ -50,13 +50,19 @@ function App() {
       maxFileSize={10}
       maxUploadFiles={0}
       maxFilesContainerHeight={357}
-      errorSizeMessage={'fill it or move it to use the default error message'}
+      errorSizeMessage={'fill it or remove it to use the default error message'}
       allowedExtensions={['jpg', 'jpeg']}
       onFilesChange={handleFilesChange}
       onError={handleFileUploadError}
       imageSrc={'path/to/custom/image'}
       bannerProps={{ elevation: 0, variant: "outlined" }}
       containerProps={{ elevation: 0, variant: "outlined" }}
+      placeholderImageDimension={{
+        xs: { width: 128, height: 128 },
+        sm: { width: 128, height: 128 },
+        md: { width: 164, height: 164 },
+        lg: { width: 256, height: 256 }
+      }}
     />
   )
 }

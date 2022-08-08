@@ -1,7 +1,14 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 import PropTypes from 'prop-types'
-import { 
-  Button, Grid, Typography, Alert, Paper, Box, Hidden,
+import {
+  Button,
+  Grid,
+  Alert,
+  Paper,
+  Box,
+  Hidden,
+  Typography,
+  useMediaQuery,
 } from '@mui/material'
 import { useTheme, styled } from '@mui/material/styles'
 import FileAttachment from "./FileAttachment.jsx"
@@ -53,7 +60,8 @@ function FileUpload(props) {
     allowedExtensions,
     buttonRemoveLabel,
     filesContainerHeight,
-    maxFilesContainerHeight
+    maxFilesContainerHeight,
+    placeholderImageDimension
   } = props
   const theme = useTheme()
   
@@ -63,6 +71,20 @@ function FileUpload(props) {
   
   const oneMega = 1024 * 1024
   const filesCardRef = useRef()
+
+  let imageDimension = { width: 128, height: 128 }
+  if (useMediaQuery(theme.breakpoints.up('xs')) && placeholderImageDimension?.xs) {
+    imageDimension = placeholderImageDimension.xs
+  }
+  if (useMediaQuery(theme.breakpoints.up('sm')) && placeholderImageDimension?.sm) {
+    imageDimension = placeholderImageDimension.sm
+  }
+  if (useMediaQuery(theme.breakpoints.up('md')) && placeholderImageDimension?.md) {
+    imageDimension = placeholderImageDimension.md
+  }
+  if (useMediaQuery(theme.breakpoints.up('lg')) && placeholderImageDimension?.lg) {
+    imageDimension = placeholderImageDimension.lg
+  }
   
   /**
    * @name renderPreview
@@ -265,22 +287,12 @@ function FileUpload(props) {
             xs={12} sm={3} md={4} 
             sx={{ textAlign: 'center' }}
           >
-            <Hidden smDown>
-              <img
-                alt=""
-                width={120}
-                height={120}
-                src={imageSrc || uploadImage}
-              />
-            </Hidden>
-            <Hidden smUp>
-              <img
-                alt=""
-                width={128}
-                height={128}
-                src={imageSrc || uploadImage}
-              />
-            </Hidden>
+            <img
+              alt="Loading image..."
+              src={imageSrc || uploadImage}
+              width={imageDimension.width}
+              height={imageDimension.height}
+            />
           </Grid>
           <Grid
             item
@@ -391,7 +403,8 @@ FileUpload.propTypes = {
   errorSizeMessage: PropTypes.string,
   allowedExtensions: PropTypes.array,
   onError: PropTypes.func,
-  onFilesChange: PropTypes.func
+  onFilesChange: PropTypes.func,
+  placeholderImageDimension: PropTypes.object
 }
 
 FileUpload.defaultProps = {
@@ -402,7 +415,8 @@ FileUpload.defaultProps = {
   leftLabel: "or",
   rightLabel: "to select files",
   buttonLabel: "click here",
-  maxFilesContainerHeight: 300
+  maxFilesContainerHeight: 300,
+  placeholderImageDimension: []
 }
 
 export default FileUpload
