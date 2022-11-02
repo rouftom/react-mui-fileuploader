@@ -3,6 +3,7 @@
   "version": "0.3.0",
   "description": "🗃️ React mui fileuploader is a react component based on @mui v5 that allows you to upload files with an awesome ui component",
   "main": "dist/index.esm.js",
+  "typings": "index.d.ts",
   "scripts": {
     "build": "rollup -c"
   },
@@ -41,6 +42,7 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "@rollup/plugin-babel": "^5.3.1",
+    "@types/react": "^17.0.43",
     "autoprefixer": "^10.4.4",
     "react": "^18.1.0",
     "rollup": "^2.70.1",
