@@ -17,10 +17,12 @@ function FileAttachment (props) {
   } = props
   const theme = useTheme()
   let icon = <InsertDriveFileOutlinedIcon color="primary" fontSize="large" />
+
   // Set icon for compressed files
   if (/\.(g?zip|tar|gz|rar)$/i.test(file?.name)) {
     icon = <ArchiveOutlinedIcon color="primary" fontSize="large" />
   }
+
   // Set icon for media files
   if (/\.(mp.|midi|mkv|avi)$/i.test(file?.name)) {
     icon = <PlayCircleOutlineIcon color="primary" fontSize="large" />
@@ -64,7 +66,8 @@ function FileAttachment (props) {
           </Typography>
         </Typography>
       </Box>
-      <Typography component="div" sx={{ textAlign: 'right' }}>
+
+      <Typography component="div" sx={{ mr: -.5, textAlign: 'right' }}>
         <IconButton 
           disabled={disabled} 
           onClick={() => hanfleRemoveFile(index)}

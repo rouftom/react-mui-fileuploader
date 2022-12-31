@@ -1,10 +1,9 @@
-<p align="center"><a href="" target="_blank"><img align="center" src="public/preview.png"></a></p>
+<p style="text-align: center;"><a href="" target="_blank"><img alt="" style="text-align: center;" src="public/preview.png"></a></p>
 
+<h1 style="text-align: center;">🗃️ React Material Fileuploader</h1>
+<p style="text-align: center;">developed with <a target="_blank" href="https://mui.com">@mui v5</a> </p>
 
-<h1 align="center">🗃️ React Material Fileuploader</h1>
-<p align="center">developed with <a target="_blank" href="https://mui.com">@mui v5</a> </p>
-
-<p align="center">
+<p style="text-align: center;">
   <img alt="MIT license" src="https://img.shields.io/badge/license-MIT-blue.svg">
   <img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/rouftom/react-mui-fileuploader">
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/rouftom/react-mui-fileuploader">
@@ -13,8 +12,9 @@
 
 ---
 
-React mui fileuploader is a react component based on @mui v5 that allows you to upload files with an awesome ui component.
+React mui fileuploader is a React component based on @mui v5 that allows you to upload files with an awesome ui component.
 
+## [DEMO](https://eb6ie7.csb.app/)
 
 ## 🚀 Installation
 ```nodejs
@@ -27,7 +27,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import FileUpload from "react-mui-fileuploader"
 
-function App() {
+function Wrapper() {
   
   const handleFileUploadError = (error) => {
     // Do something...
@@ -38,7 +38,8 @@ function App() {
   }
 
   return (
-    <FileUpload
+    <FileUpload 
+      getBase64={false}
       multiFile={true}
       disabled={false}
       title="My awesome file uploader"
@@ -50,13 +51,24 @@ function App() {
       maxFileSize={10}
       maxUploadFiles={0}
       maxFilesContainerHeight={357}
+      acceptedType={'image/*'}
       errorSizeMessage={'fill it or remove it to use the default error message'}
       allowedExtensions={['jpg', 'jpeg']}
       onFilesChange={handleFilesChange}
       onError={handleFileUploadError}
       imageSrc={'path/to/custom/image'}
-      bannerProps={{ elevation: 0, variant: "outlined" }}
-      containerProps={{ elevation: 0, variant: "outlined" }}
+      BannerProps={{ elevation: 0, variant: "outlined" }}
+      onContextReady={context => {
+        
+      }}
+      ContainerProps={{
+        elevation: 0,
+        variant: "outlined",
+        sx: {
+          p: 1,
+          background: theme.palette.background.default
+        }
+      }}
       placeholderImageDimension={{
         xs: { width: 128, height: 128 },
         sm: { width: 128, height: 128 },
@@ -67,10 +79,38 @@ function App() {
   )
 }
 
-ReactDOM.render(<App />, document.querySelector('#root'))
+ReactDOM.render(<Wrapper />, document.querySelector('#root'))
 
 ```
 
+## Data structure
+
+| Name 	|  Type 	|   Required	|  Details 	|  
+|------	|---	|---	|---	|
+|    getBase64  	|  `boolean` 	|  `false` 	|  Get the original input files. Default value  `false` 	|
+|    multiFile  	|  `boolean` 	|  `false` 	|  Multifile support. Default value  `true` 	|
+|    title  	|  `string` 	|  `false` 	|  Component title 	|
+|    header  	|  `string` 	|  `false` 	|  Banner component big title 	|
+|    imageSrc  	|  `string` 	|  `false` 	|   Banner image placeholder source path | 
+|    imageSrcAlt  	|  `string` 	|  `false` 	|   Banner image placeholder label	|
+|    leftLabel  	|  `string` 	|  `false` 	|  Banner left label  | 
+|    rightLabel  	|  `string` 	|  `false` 	|  Banner right label 	| 
+|    buttonLabel  	|  `string` 	|  `false` 	|  Banner button label 	| 
+|    buttonRemoveLabel  	|  `string` 	|  `false` 	|  Remove button label 	| 
+|    disabled  	|  `boolean` 	|  `false` 	|  This property enables or disables the component. Default value `false` 	|  
+|    maxFileSize  	|  `number` 	|  `false` 	|  Maximum size (in mb) for files to add. Default value `0`. Value `0` means `unlimited size` 	| 
+|    maxUploadFiles  	|  `number` 	|  `false` 	|  Maximum files to add. Default to `0`. Value `0` means `unlimited size` 	| 
+|    errorSizeMessage  	|  `string` 	|  `false` 	|  Error returned when a file exceeds `maxFileSize` limit 	| 
+|    acceptedType  	|  `string` 	|  `false` 	|  Accepted file type. Default value `image/*` 	| 
+|    allowedExtensions  	|  `array` 	|  `false` 	|  Array of allowed extensions. For example, you can specify `['jpg', 'jpeg', 'png']`as allowedExtensions 	| 
+|    filesContainerHeight  	|  `number` 	|  `false` 	|  Container Height 	| 
+|    maxFilesContainerHeight  	|  `number` 	|  `false` 	|  Container max height. Default value `300` 	| 
+|    onError  	|  `function` 	|  `false` 	|  Returned error message when error occurs 	| 
+|    onFilesChange  	|  `function` 	|  `false` 	|  Event handler returned when files changes 	| 
+|    onContextReady  	|  `function` 	|  `false` 	|  Returns the component context api  	| 
+|    BannerProps  	|  `object` 	|  `false` 	|  Banner props. Only MUI props are accepted 	| 
+|    ContainerProps  	|  `object` 	|  `false` 	|  Container props. Only MUI props are accepted 	| 
+|    PlaceholderImageDimension  	|  `object` 	|  `false` 	|  Dimensions (width and height) of the placeholder image. You can specify them in the properties `xs: {width: 64, height: 64}`, `sm: {width: 64, height: 64}`, `md: {width: 64, height: 64}`, `lg: {width: 64, height: 64}`, etc. |
 
 ## 😁 Authors
 
