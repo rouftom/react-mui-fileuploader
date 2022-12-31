@@ -328,7 +328,7 @@ function FileUpload(props) {
     }
 
     if (onFilesChange) {
-      onFilesChange([ ...files ])
+      onFilesChange(getBase64 ? files : originalFiles)
       onContextReady(getContext())
     }
     // eslint-disable-next-line
