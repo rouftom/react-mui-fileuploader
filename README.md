@@ -59,17 +59,14 @@ function Wrapper() {
       imageSrc={'path/to/custom/image'}
       BannerProps={{ elevation: 0, variant: "outlined" }}
       onContextReady={context => {
-        
+        // access to component context here
       }}
       ContainerProps={{
         elevation: 0,
         variant: "outlined",
-        sx: {
-          p: 1,
-          background: theme.palette.background.default
-        }
+        sx: { p: 1 }
       }}
-      placeholderImageDimension={{
+      PlaceholderImageDimension={{
         xs: { width: 128, height: 128 },
         sm: { width: 128, height: 128 },
         md: { width: 164, height: 164 },
