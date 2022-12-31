@@ -386,7 +386,7 @@ function FileUpload(props) {
       setAction(null);
     }
     if (onFilesChange) {
-      onFilesChange(_toConsumableArray(files));
+      onFilesChange(getBase64 ? files : originalFiles);
       onContextReady(getContext());
     }
     // eslint-disable-next-line
