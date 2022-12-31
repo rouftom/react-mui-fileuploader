@@ -17,7 +17,8 @@ MODE.map((m) => {
       name: "react-material-fileuploader",
       file: `dist/index.${m.fomart}.js`,
       format: m.fomart,
-      exports: "auto"
+      exports: "auto",
+      sourcemap: true
     },
     // this externelizes react to prevent rollup from compiling it
     external: [

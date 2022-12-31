@@ -584,3 +584,4 @@
   return FileUpload;
 
 }));
+//# sourceMappingURL=index.umd.js.map
