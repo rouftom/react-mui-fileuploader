@@ -329,7 +329,7 @@ function FileUpload(props) {
 
     if (onFilesChange) {
       onFilesChange(getBase64 ? files : originalFiles)
-      onContextReady(getContext())
+      if (onContextReady) onContextReady(getContext())
     }
     // eslint-disable-next-line
   }, [files, action])
