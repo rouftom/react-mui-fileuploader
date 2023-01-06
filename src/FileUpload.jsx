@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
-import PropTypes from 'prop-types'
+import React, { useState, useRef, useEffect, useCallback } from "react";
+import PropTypes from "prop-types";
 import {
   Button,
   Grid,
@@ -9,31 +9,31 @@ import {
   Hidden,
   Typography,
   useMediaQuery,
-} from '@mui/material'
-import FileAttachment from "./FileAttachment.jsx"
-import { useTheme, styled } from '@mui/material/styles'
-import uploadImage from '../public/Files And Folder_Two Color_2.svg'
+} from "@mui/material";
+import FileAttachment from "./FileAttachment.jsx";
+import { useTheme, styled } from "@mui/material/styles";
+import uploadImage from "../public/Files And Folder_Two Color_2.svg";
 
 const StyledContainer = styled(Typography)(({ theme }) => ({
   "&::-webkit-scrollbar": {
     width: 7,
-    height: 6
+    height: 6,
   },
   "&::-webkit-scrollbar-track": {
-    WebkitBoxShadow: "inset 0 0 6px rgb(125, 161, 196, 0.5)"
+    WebkitBoxShadow: "inset 0 0 6px rgb(125, 161, 196, 0.5)",
   },
   "&::-webkit-scrollbar-thumb": {
     WebkitBorderRadius: 4,
     borderRadius: 4,
     background: "rgba(0, 172, 193, .5)",
-    WebkitBoxShadow: "inset 0 0 6px rgba(25, 118, 210, .5)"
+    WebkitBoxShadow: "inset 0 0 6px rgba(25, 118, 210, .5)",
   },
   "&::-webkit-scrollbar-thumb:window-inactive": {
-    background: "rgba(125, 161, 196, 0.5)"
-  }
-}))
+    background: "rgba(125, 161, 196, 0.5)",
+  },
+}));
 
-const oneMega = 1024 * 1024
+const oneMega = 1024 * 1024;
 
 /**
  * @name FileUpload
@@ -55,9 +55,10 @@ function FileUpload(props) {
     rightLabel,
     buttonLabel,
     maxFileSize,
+    maskPlaceholder,
     /*
-    * @deprecated Since version 0.3.0, please use BannerProps instead. Will be delete in next release
-    */
+     * @deprecated Since version 0.3.0, please use BannerProps instead. Will be delete in next release
+     */
     bannerProps,
     BannerProps,
     acceptedType,
@@ -65,8 +66,8 @@ function FileUpload(props) {
     onFilesChange,
     maxUploadFiles,
     /*
-    * @deprecated Since version 0.3.0, , please use ContainerProps instead. Will be delete in next release
-    */
+     * @deprecated Since version 0.3.0, , please use ContainerProps instead. Will be delete in next release
+     */
     containerProps,
     ContainerProps,
     onContextReady,
@@ -76,46 +77,57 @@ function FileUpload(props) {
     filesContainerHeight,
     maxFilesContainerHeight,
     /*
-    * @deprecated Since version 0.3.0, , please use PlaceholderImageDimension instead. Will be delete in next release
-    */
+     * @deprecated Since version 0.3.0, , please use PlaceholderImageDimension instead. Will be delete in next release
+     */
     placeholderImageDimension,
     PlaceholderImageDimension,
-  } = props
+  } = props;
 
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const bannnerCompatibilityProps = { ...bannerProps, ...BannerProps }
-  const containerCompatibilityProps = { ...containerProps, ...ContainerProps }
+  const bannnerCompatibilityProps = { ...bannerProps, ...BannerProps };
+  const containerCompatibilityProps = { ...containerProps, ...ContainerProps };
   const placeholderCompatibilityProps = {
     ...placeholderImageDimension,
-    ...PlaceholderImageDimension
+    ...PlaceholderImageDimension,
+  };
+
+  const [error, setError] = useState();
+  const [action, setAction] = useState();
+  const [animate, setAnimate] = useState();
+  const [files, setFiles] = useState([]);
+  const [originalFiles, setOriginalFiles] = useState([]);
+
+  const inputRef = useRef();
+  const filesCardRef = useRef();
+  let imageDimension = { width: 128, height: 128 };
+
+  if (
+    useMediaQuery(theme.breakpoints.up("xs")) &&
+    placeholderCompatibilityProps?.xs
+  ) {
+    imageDimension = placeholderCompatibilityProps.xs;
   }
 
-
-  const [error, setError] = useState()
-  const [action, setAction] = useState()
-  const [animate, setAnimate] = useState()
-  const [files, setFiles] = useState([])
-  const [originalFiles, setOriginalFiles] = useState([])
-
-  const inputRef = useRef()
-  const filesCardRef = useRef()
-  let imageDimension = { width: 128, height: 128 }
-
-  if (useMediaQuery(theme.breakpoints.up('xs')) && placeholderCompatibilityProps?.xs) {
-    imageDimension = placeholderCompatibilityProps.xs
+  if (
+    useMediaQuery(theme.breakpoints.up("sm")) &&
+    placeholderCompatibilityProps?.sm
+  ) {
+    imageDimension = placeholderCompatibilityProps.sm;
   }
 
-  if (useMediaQuery(theme.breakpoints.up('sm')) && placeholderCompatibilityProps?.sm) {
-    imageDimension = placeholderCompatibilityProps.sm
+  if (
+    useMediaQuery(theme.breakpoints.up("md")) &&
+    placeholderCompatibilityProps?.md
+  ) {
+    imageDimension = placeholderCompatibilityProps.md;
   }
 
-  if (useMediaQuery(theme.breakpoints.up('md')) && placeholderCompatibilityProps?.md) {
-    imageDimension = placeholderCompatibilityProps.md
-  }
-
-  if (useMediaQuery(theme.breakpoints.up('lg')) && placeholderCompatibilityProps?.lg) {
-    imageDimension = placeholderCompatibilityProps.lg
+  if (
+    useMediaQuery(theme.breakpoints.up("lg")) &&
+    placeholderCompatibilityProps?.lg
+  ) {
+    imageDimension = placeholderCompatibilityProps.lg;
   }
 
   /**
@@ -126,89 +138,90 @@ function FileUpload(props) {
    * @returns void
    */
   const addFile = (event, filesTab) => {
-    setAnimate(false)
-    setError(null)
+    setAnimate(false);
+    setError(null);
 
     if (!filesTab && event?.target?.files) {
-      filesTab = event?.target?.files
+      filesTab = event?.target?.files;
     }
 
     if (!filesTab || filesTab.length === 0) {
-      return onError(`Empty file input`)
+      return onError(`Empty file input`);
     }
 
     if (maxUploadFiles) {
       if (maxUploadFiles - files.length <= 0) {
-        setError(`You cannot attach more than ${maxUploadFiles} files`)
-        return onError(`You cannot attach more than ${maxUploadFiles} files`)
+        setError(`You cannot attach more than ${maxUploadFiles} files`);
+        return onError(`You cannot attach more than ${maxUploadFiles} files`);
       }
     }
 
     if (window.File && window.FileReader && window.FileList && window.Blob) {
       try {
-
         for (let i = 0; i < filesTab?.length; i++) {
-          let file = filesTab[i]
-          let reader = new FileReader()
-          let extension = file?.type?.split('/')[1]
+          let file = filesTab[i];
+          let reader = new FileReader();
+          let extension = file?.type?.split("/")[1];
 
           if (maxFileSize && maxFileSize > 0) {
-            if (file.size > (1024 * 1024 * maxFileSize)) {
-              let message = (
-                errorSizeMessage
-                || `The size of files cannot exceed ${maxFileSize}Mb`
-              )
+            if (file.size > 1024 * 1024 * maxFileSize) {
+              let message =
+                errorSizeMessage ||
+                `The size of files cannot exceed ${maxFileSize}Mb`;
 
-              setError(message)
-              onError(message)
+              setError(message);
+              onError(message);
               //break
-              continue
+              continue;
             }
           }
 
           if (allowedExtensions?.length > 0) {
-            let isAllowed = allowedExtensions
-              .findIndex(
-                ext => ext?.toLowerCase() === extension.toLowerCase()
-              ) !== -1
+            let isAllowed =
+              allowedExtensions.findIndex(
+                (ext) => ext?.toLowerCase() === extension.toLowerCase()
+              ) !== -1;
 
             if (!isAllowed) {
-              let message = `Extension .${extension} has been excluded`
-              setError(message)
-              onError(message)
-              continue
+              let message = `Extension .${extension} has been excluded`;
+              setError(message);
+              onError(message);
+              continue;
             }
           }
 
           if (!getBase64) {
-            originalFiles.push(file)
-            setOriginalFiles(originalFiles)
+            originalFiles.push(file);
+            setOriginalFiles(originalFiles);
           }
 
-          reader.addEventListener("load", function () {
-            let obj = {
-              name: file.name,
-              size: file.size,
-              path: this.result,
-              contentType: file.type,
-              lastModified: file.lastModified,
-              extension: extension?.toLowerCase()
-            }
+          reader.addEventListener(
+            "load",
+            function () {
+              let obj = {
+                name: file.name,
+                size: file.size,
+                path: this.result,
+                contentType: file.type,
+                lastModified: file.lastModified,
+                extension: extension?.toLowerCase(),
+              };
 
-            files.push(obj)
-            setFiles([ ...files ])
-          }, false)
+              files.push(obj);
+              setFiles([...files]);
+            },
+            false
+          );
 
-          reader.readAsDataURL(file)
+          reader.readAsDataURL(file);
         }
 
-        event.target.value = ''
-
+        event.target.value = "";
       } catch (e) {
-        setError(e.toString())
+        setError(e.toString());
       }
     }
-  }
+  };
 
   /**
    * @name removeFile
@@ -217,25 +230,25 @@ function FileUpload(props) {
    * @returns void
    */
   const removeFile = (index) => {
-    setError(null)
+    setError(null);
 
-    inputRef.current.value = ''
+    inputRef.current.value = "";
 
-    if (typeof index !== 'number') {
-      setOriginalFiles([])
-      return setFiles([])
+    if (typeof index !== "number") {
+      setOriginalFiles([]);
+      return setFiles([]);
     }
 
-    if (index < 0 || index > files.length-1) {
-      return console.error("item's index not found...")
+    if (index < 0 || index > files.length - 1) {
+      return console.error("item's index not found...");
     }
 
-    files?.splice(index, 1)
-    originalFiles?.splice(index, 1)
+    files?.splice(index, 1);
+    originalFiles?.splice(index, 1);
 
-    setFiles([ ...files ])
-    setOriginalFiles([ ...originalFiles ])
-  }
+    setFiles([...files]);
+    setOriginalFiles([...originalFiles]);
+  };
 
   /**
    * @name handleDragEnter
@@ -243,9 +256,9 @@ function FileUpload(props) {
    * @returns void
    */
   const handleDragEnter = useCallback((event) => {
-    event.preventDefault()
-    setAnimate(true)
-  }, [])
+    event.preventDefault();
+    setAnimate(true);
+  }, []);
 
   /**
    * @name handleDragOver
@@ -253,9 +266,9 @@ function FileUpload(props) {
    * @returns void
    */
   const handleDragOver = useCallback((event) => {
-    event.stopPropagation()
-    event.preventDefault()
-  }, [])
+    event.stopPropagation();
+    event.preventDefault();
+  }, []);
 
   /**
    * @name handleDrop
@@ -263,16 +276,16 @@ function FileUpload(props) {
    * @returns void
    */
   const handleDrop = useCallback((event) => {
-    event.stopPropagation()
-    event.preventDefault()
+    event.stopPropagation();
+    event.preventDefault();
 
-    setAnimate(false)
+    setAnimate(false);
 
     setAction({
       event,
       files: event.dataTransfer?.files,
-    })
-  }, [])
+    });
+  }, []);
 
   /**
    * @name handleDragLeave
@@ -280,62 +293,62 @@ function FileUpload(props) {
    * @returns void
    */
   const handleDragLeave = useCallback(() => {
-    setAnimate(false)
-  }, [])
+    setAnimate(false);
+  }, []);
 
   const getContext = () => ({
     addFile: addFile,
     removeFile: removeFile,
     input: inputRef.current,
-    files: getBase64 ? files : originalFiles
-  })
+    files: getBase64 ? files : originalFiles,
+  });
 
   useEffect(() => {
     if (
-      inputRef.current
-      && onContextReady
-      && typeof onContextReady === 'function') {
-      onContextReady(getContext())
+      inputRef.current &&
+      onContextReady &&
+      typeof onContextReady === "function"
+    ) {
+      onContextReady(getContext());
     }
     // eslint-disable-next-line
-  }, [inputRef.current])
+  }, [inputRef.current]);
 
   useEffect(() => {
-    let dragDiv = filesCardRef.current
+    let dragDiv = filesCardRef.current;
 
     if (dragDiv && !dragDiv.ondrop && !disabled) {
-      dragDiv.ondrop = handleDrop
-      dragDiv.ondragend = handleDragLeave
-      dragDiv.ondragover = handleDragOver
-      dragDiv.ondragenter = handleDragEnter
+      dragDiv.ondrop = handleDrop;
+      dragDiv.ondragend = handleDragLeave;
+      dragDiv.ondragover = handleDragOver;
+      dragDiv.ondragenter = handleDragEnter;
     }
     // eslint-disable-next-line
-  }, [filesCardRef.current])
+  }, [filesCardRef.current]);
 
   useEffect(() => {
-    if (
-      defaultFiles?.length > 0
-      && files?.length !== defaultFiles?.length) {
-      setFiles(defaultFiles)
+    if (defaultFiles?.length > 0 && files?.length !== defaultFiles?.length) {
+      setFiles(defaultFiles);
     }
     // eslint-disable-next-line
-  }, [defaultFiles])
+  }, [defaultFiles]);
 
   useEffect(() => {
     if (action?.event && action?.files) {
-      addFile(action.event, action.files)
-      setAction(null)
+      addFile(action.event, action.files);
+      setAction(null);
     }
 
     if (onFilesChange) {
-      onFilesChange(getBase64 ? files : originalFiles)
-      if (onContextReady) onContextReady(getContext())
+      onFilesChange(getBase64 ? files : originalFiles);
+      if (onContextReady) onContextReady(getContext());
     }
     // eslint-disable-next-line
-  }, [files, action])
+  }, [files, action]);
 
-  const background = animate ?
-    theme.palette.secondary.light : theme.palette.primary.light
+  const background = animate
+    ? theme.palette.secondary.light
+    : theme.palette.primary.light;
 
   return (
     <Paper
@@ -343,57 +356,56 @@ function FileUpload(props) {
       elevation={0}
       ref={filesCardRef}
       variant="outlined"
-      { ...containerCompatibilityProps }
+      {...containerCompatibilityProps}
     >
       <Typography
         gutterBottom
         component="div"
         color="textSecondary"
-        sx={{ display: 'flex' }}
+        sx={{ display: "flex" }}
       >
-        <Box sx={{ flexGrow: 1, fontSize: 12 }}>
-          {title}
-        </Box>
+        <Box sx={{ flexGrow: 1, fontSize: 12 }}>{title}</Box>
 
-        {files?.length > 0 &&
-        <Box sx={{ fontSize: 12 }}>
-          {files.length}
-
-          {maxUploadFiles > 0 &&
-          `/${maxUploadFiles}`} file{files?.length > 0 && 's'} joined
-        </Box>}
+        {files?.length > 0 && (
+          <Box sx={{ fontSize: 12 }}>
+            {files.length}
+            {maxUploadFiles > 0 && `/${maxUploadFiles}`} file
+            {files?.length > 0 && "s"} joined
+          </Box>
+        )}
       </Typography>
 
       <Paper
         elevation={0}
         sx={{ p: 1, transition: 500, background }}
-        { ...bannnerCompatibilityProps }
+        {...bannnerCompatibilityProps}
       >
-        <Grid
-          container
-          spacing={2}
-          alignItems="center"
-          justifyContent="center"
-        >
+        <Grid container spacing={2} alignItems="center" justifyContent="center">
           <Grid
             item
-            xs={12} sm={3} md={4}
-            sx={{ textAlign: 'center', mt: { xs: -3, sm: 2 } }}
+            xs={12}
+            sm={3}
+            md={4}
+            sx={{ textAlign: "center", mt: { xs: -3, sm: 2 } }}
           >
-            <img
-              alt={imageSrcAlt}
-              src={imageSrc || uploadImage}
-              width={imageDimension.width}
-              height={imageDimension.height}
-            />
+            {!maskPlaceholder ? (
+              <img
+                alt={imageSrcAlt}
+                src={imageSrc || uploadImage}
+                width={imageDimension.width}
+                height={imageDimension.height}
+              />
+            ) : undefined}
           </Grid>
           <Grid
             item
-            xs={12} sm={9} md={8}
+            xs={12}
+            sm={9}
+            md={8}
             sx={{
               color: "#fff",
-              textAlign: 'center',
-              mt: { xs: -4, sm: 2 }
+              textAlign: "center",
+              mt: { xs: -4, sm: 2 },
             }}
           >
             <Hidden smDown>
@@ -415,12 +427,12 @@ function FileUpload(props) {
                 disabled={disabled}
                 onClick={() => inputRef.current?.click()}
                 sx={{
-                  m: .5,
+                  m: 0.5,
                   color: theme.palette.grey["50"],
                   borderColor: theme.palette.grey["50"],
-                  '&:hover': {
-                    borderColor: theme.palette.grey["50"]
-                  }
+                  "&:hover": {
+                    borderColor: theme.palette.grey["50"],
+                  },
                 }}
               >
                 {buttonLabel}
@@ -439,34 +451,37 @@ function FileUpload(props) {
         </Grid>
       </Paper>
 
-      {error &&
-      <Alert
-        color="error"
-        severity="error"
-        sx={{ mt: 1 }}
-        onClose={() => setError(null)}
-      >
-        {error}
-      </Alert>}
-
-      {files?.length > 0 &&
-      <React.Fragment>
-        <StyledContainer
-          component="div"
-          sx={{
-            overflowY: "auto",
-            mt: 2, mr: -1, pr: 1,
-            height: filesContainerHeight,
-            maxHeight: maxFilesContainerHeight
-          }}
+      {error && (
+        <Alert
+          color="error"
+          severity="error"
+          sx={{ mt: 1 }}
+          onClose={() => setError(null)}
         >
-          {files?.map((file, index) => {
-              let size = file.size
+          {error}
+        </Alert>
+      )}
+
+      {files?.length > 0 && (
+        <React.Fragment>
+          <StyledContainer
+            component="div"
+            sx={{
+              overflowY: "auto",
+              mt: 2,
+              mr: -1,
+              pr: 1,
+              height: filesContainerHeight,
+              maxHeight: maxFilesContainerHeight,
+            }}
+          >
+            {files?.map((file, index) => {
+              let size = file.size;
 
               if (size > oneMega) {
-                size = (file.size/oneMega).toFixed(2) + ' Mb'
+                size = (file.size / oneMega).toFixed(2) + " Mb";
               } else {
-                size = (file.size/1024).toFixed(2) + ' Kb'
+                size = (file.size / 1024).toFixed(2) + " Kb";
               }
 
               return (
@@ -478,22 +493,19 @@ function FileUpload(props) {
                   key={`upload-file--${index}`}
                   hanfleRemoveFile={removeFile}
                 />
-              )
+              );
             })}
-        </StyledContainer>
+          </StyledContainer>
 
-        <Typography component="div" align="right" sx={{ mt: 1 }}>
-          <Button
-            size="small"
-            disabled={disabled}
-            onClick={removeFile}
-          >
-            {buttonRemoveLabel || 'Remove all'}
-          </Button>
-        </Typography>
-      </React.Fragment>}
-  </Paper>
-  )
+          <Typography component="div" align="right" sx={{ mt: 1 }}>
+            <Button size="small" disabled={disabled} onClick={removeFile}>
+              {buttonRemoveLabel || "Remove all"}
+            </Button>
+          </Typography>
+        </React.Fragment>
+      )}
+    </Paper>
+  );
 }
 
 FileUpload.propTypes = {
@@ -525,7 +537,8 @@ FileUpload.propTypes = {
   onFilesChange: PropTypes.func,
   placeholderImageDimension: PropTypes.object,
   PlaceholderImageDimension: PropTypes.object,
-}
+  maskPlaceholder: PropTypes.bool,
+};
 
 FileUpload.defaultProps = {
   getBase64: false,
@@ -547,6 +560,7 @@ FileUpload.defaultProps = {
   BannerProps: {},
   containerProps: {},
   ContainerProps: {},
-}
+  maskPlaceholder: false,
+};
 
-export default FileUpload
+export default FileUpload;
