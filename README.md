@@ -78,10 +78,10 @@ return (
 
 ```javascript
 import React, { useState } from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import FileUpload from "react-mui-fileuploader";
 
-function Wrapper() {
+function MuiFileUploader() {
   const [filesToUpload, setFilesToUpload] = useState([]);
 
   const handleFilesChange = (files) => {
@@ -112,10 +112,11 @@ function Wrapper() {
   );
 }
 
-ReactDOM.render(<Wrapper />, document.querySelector("#root"));
+const root = createRoot(document.getElementById("root"));
+root.render(<MuiFileUploader />);
 ```
 
-[![Edit thirsty-visvesvaraya-r9u6ho](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/thirsty-visvesvaraya-r9u6ho?fontsize=14&hidenavigation=1&theme=dark)
+[![Edit react-mui-fileuploader example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/thirsty-visvesvaraya-r9u6ho?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Data structure
 
