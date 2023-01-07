@@ -114,6 +114,7 @@ function Wrapper() {
 
 ReactDOM.render(<Wrapper />, document.querySelector("#root"));
 ```
+[![Edit shy-hill-9ctcl1](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/shy-hill-9ctcl1?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Data structure
 
