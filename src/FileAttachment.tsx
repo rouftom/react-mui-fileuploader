@@ -1,7 +1,7 @@
 import React, {  useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
-import { Typography, Avatar, IconButton, Box, Theme } from "@mui/material"
+import { Typography, Avatar, IconButton, Box } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
@@ -17,7 +17,7 @@ function FileAttachment(props: FileAttachmentProps) {
     handleRemoveFile
   } = props
 
-  const theme: Theme = useTheme()
+  const theme = useTheme()
 
   const avatarRef = useRef<HTMLDivElement | null>(null)
 
