@@ -85,10 +85,10 @@ function FileAttachment(props) {
                     React.createElement(CloseIcon, null))))));
 }
 FileAttachment.propTypes = {
-    size: PropTypes.string.isRequired,
+    size: PropTypes.string,
     file: PropTypes.object,
-    index: PropTypes.number.isRequired,
     disabled: PropTypes.bool,
+    index: PropTypes.number.isRequired,
     handleRemoveFile: PropTypes.func.isRequired
 };
 
@@ -398,7 +398,7 @@ function FileUpload(props) {
                         maxUploadFiles > 0 &&
                             "/".concat(maxUploadFiles),
                         " file",
-                        (files === null || files === void 0 ? void 0 : files.length) > 0 && 's',
+                        (files === null || files === void 0 ? void 0 : files.length) > 1 && 's',
                         " joined")),
             React.createElement(Paper, __assign({ elevation: 0, sx: { p: 1, transition: 500, background: background } }, bannerCompatibilityProps),
                 React.createElement(Grid, { container: true, spacing: 2, alignItems: "center", justifyContent: "center" },
@@ -408,7 +408,7 @@ function FileUpload(props) {
                     React.createElement(Grid, __assign({ item: true, xs: 12, sm: true, md: true, sx: {
                             color: "#fff",
                             textAlign: 'center',
-                            mt: { xs: -4, sm: 2 }
+                            mt: { xs: showPlaceholderImage ? -4 : 0, sm: 2 }
                         } }, LabelsGridProps),
                         React.createElement(Hidden, { smDown: true },
                             React.createElement(Typography, { variant: "h5" },

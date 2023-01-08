@@ -4,10 +4,10 @@ import { FileAttachmentProps } from "./index.types";
 declare function FileAttachment(props: FileAttachmentProps): JSX.Element;
 declare namespace FileAttachment {
     var propTypes: {
-        size: PropTypes.Validator<string>;
+        size: PropTypes.Requireable<string>;
         file: PropTypes.Requireable<object>;
-        index: PropTypes.Validator<number>;
         disabled: PropTypes.Requireable<boolean>;
+        index: PropTypes.Validator<number>;
         handleRemoveFile: PropTypes.Validator<(...args: any[]) => any>;
     };
 }
