@@ -17,68 +17,106 @@ React mui fileuploader is a React component based on @mui v5 that allows you to 
 ## [DEMO](https://eb6ie7.csb.app/)
 
 ## 🚀 Installation
+
 ```nodejs
   npm install react-mui-fileuploader
 ```
 
 ## 💻 Usage
-```javascript
-import React from 'react'
-import ReactDOM from 'react-dom'
-import FileUpload from "react-mui-fileuploader"
 
-function Wrapper() {
-  
-  const handleFileUploadError = (error) => {
-    // Do something...
-  }
-  
-  const handleFilesChange = (files) => {
-    // Do something...
-  }
-
-  return (
-    <FileUpload 
-      getBase64={false}
-      multiFile={true}
-      disabled={false}
-      title="My awesome file uploader"
-      header="[Drag to drop]"
-      leftLabel="or"
-      rightLabel="to select files"
-      buttonLabel="click here"
-      buttonRemoveLabel="Remove all"
-      maxFileSize={10}
-      maxUploadFiles={0}
-      maxFilesContainerHeight={357}
-      acceptedType={'image/*'}
-      errorSizeMessage={'fill it or remove it to use the default error message'}
-      allowedExtensions={['jpg', 'jpeg']}
-      onFilesChange={handleFilesChange}
-      onError={handleFileUploadError}
-      imageSrc={'path/to/custom/image'}
-      BannerProps={{ elevation: 0, variant: "outlined" }}
-      onContextReady={context => {
-        // access to component context here
-      }}
-      ContainerProps={{
-        elevation: 0,
-        variant: "outlined",
-        sx: { p: 1 }
-      }}
-      PlaceholderImageDimension={{
-        xs: { width: 128, height: 128 },
-        sm: { width: 128, height: 128 },
-        md: { width: 164, height: 164 },
-        lg: { width: 256, height: 256 }
-      }}
-    />
-  )
+```javascript 
+const handleFileUploadError = (error) => {
+  // Do something...
 }
 
-ReactDOM.render(<Wrapper />, document.querySelector('#root'))
+const handleFilesChange = (files) => {
+  // Do something...
+  setUploadedFiles([...files]);
+}
+
+return (
+  <FileUpload 
+    getBase64={false}
+    multiFile={true}
+    disabled={false}
+    title="My awesome file uploader"
+    header="[Drag to drop]"
+    leftLabel="or"
+    rightLabel="to select files"
+    buttonLabel="click here"
+    buttonRemoveLabel="Remove all"
+    maxFileSize={10}
+    maxUploadFiles={0}
+    maxFilesContainerHeight={357}
+    acceptedType={'image/*'}
+    errorSizeMessage={'fill it or remove it to use the default error message'}
+    allowedExtensions={['jpg', 'jpeg']}
+    onFilesChange={handleFilesChange}
+    onError={handleFileUploadError}
+    imageSrc={'path/to/custom/image'}
+    BannerProps={{ elevation: 0, variant: "outlined" }}
+    onContextReady={context => {
+      // access to component context here
+    }}
+    ContainerProps={{
+      elevation: 0,
+      variant: "outlined",
+      sx: { p: 1 }
+    }}
+    PlaceholderImageDimension={{
+      xs: { width: 128, height: 128 },
+      sm: { width: 128, height: 128 },
+      md: { width: 164, height: 164 },
+      lg: { width: 256, height: 256 }
+    }}
+  />
+)
 
 ```
+
+## 🎨 Possible application
+
+```javascript
+import React, { useState } from "react";
+import { createRoot } from "react-dom/client";
+import FileUpload from "react-mui-fileuploader";
+
+function MuiFileUploader() {
+  const [filesToUpload, setFilesToUpload] = useState([]);
+
+  const handleFilesChange = (files) => {
+    // Update chosen files
+    setFilesToUpload([...files]);
+  };
+
+  const uploadFiles = () => {
+    // Create a form and post it to server
+    let formData = new FormData();
+    filesToUpload.forEach((file) => formData.append("files", file));
+
+    fetch("/file/upload", {
+      method: "POST",
+      body: formData
+    });
+  };
+
+  return (
+    <>
+      <FileUpload
+        multiFile={true}
+        onFilesChange={handleFilesChange}
+        onContextReady={(context) => {}}
+      />
+      <button onClick={uploadFiles}>Upload</button>
+    </>
+  );
+}
+
+const root = createRoot(document.getElementById("root"));
+root.render(<MuiFileUploader />);
+```
+
+[![Edit react-mui-fileuploader example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/thirsty-visvesvaraya-r9u6ho?fontsize=14&hidenavigation=1&theme=dark)
 
 ## Data structure
 
