@@ -2,15 +2,16 @@ import babel from '@rollup/plugin-babel'
 import svg from 'rollup-plugin-svg'
 import styles from "rollup-plugin-styles"
 const autoprefixer = require('autoprefixer')
+import typescript from '@rollup/plugin-typescript'
 
 // the entry point for the library
-const input = 'src/index.js'
+const input = 'src/index.ts'
 let config = []
 let MODE = [{ fomart: 'esm' }, { fomart: 'umd' }]
 
 
 MODE.map((m) => {
-  let conf = {
+  let indexTs = {
     input: input,
     output: {
       // then name of your package
@@ -18,7 +19,14 @@ MODE.map((m) => {
       file: `dist/index.${m.fomart}.js`,
       format: m.fomart,
       exports: "auto",
-      sourcemap: true
+      sourcemap: true,
+      globals: {
+        'react': 'React',
+        'prop-types': 'PropTypes',
+        '@mui/material': '@mui/material',
+        '@babel/runtime': '@babel/runtime',
+        '@mui/icons-material': '@mui/icons-material'
+      },
     },
     // this externelizes react to prevent rollup from compiling it
     external: [
@@ -26,8 +34,6 @@ MODE.map((m) => {
       "@mui/icons-material",
       "@mui/lab",
       "@mui/material",
-      "@mui/system",
-      "date-fns",
       "prop-types",
       /@babel\/runtime/
     ],
@@ -41,9 +47,10 @@ MODE.map((m) => {
         ],
         babelHelpers: 'runtime'
       }),
-      svg({base64: true}),
-      // this adds sourcemaps
-      //sourcemaps(),
+      typescript({
+        tsconfig: './tsconfig.json',
+      }),
+      svg({ base64: true }),
       // this adds support for styles
       styles({
         postcss: {
@@ -54,7 +61,8 @@ MODE.map((m) => {
       })
     ]
   }
-  config.push(conf)
+
+  config.push(indexTs)
 })
 
 export default [ ...config ]

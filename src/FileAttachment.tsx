@@ -1,33 +1,39 @@
-import React from 'react'
+import React, {  useRef } from 'react'
 import PropTypes from 'prop-types'
 import { useTheme } from '@mui/material/styles'
-import {Typography, Avatar, IconButton, Box} from "@mui/material"
+import { Typography, Avatar, IconButton, Box, Theme } from "@mui/material"
 import CloseIcon from "@mui/icons-material/Close"
 import ArchiveOutlinedIcon from '@mui/icons-material/ArchiveOutlined'
 import PlayCircleOutlineIcon from '@mui/icons-material/PlayCircleOutline'
 import InsertDriveFileOutlinedIcon from '@mui/icons-material/InsertDriveFileOutlined'
+import { FileAttachmentProps } from "./index.types"
 
-function FileAttachment (props) {
+function FileAttachment(props: FileAttachmentProps) {
   const {
     size,
     file,
     index,
     disabled,
-    hanfleRemoveFile
+    handleRemoveFile
   } = props
-  const theme = useTheme()
-  let icon = <InsertDriveFileOutlinedIcon color="primary" fontSize="large" />
+
+  const theme: Theme = useTheme()
+
+  const avatarRef = useRef<HTMLDivElement | null>(null)
+
+  let icon: React.ReactNode =
+    <InsertDriveFileOutlinedIcon color="primary" fontSize="large" />
 
   // Set icon for compressed files
-  if (/\.(g?zip|tar|gz|rar)$/i.test(file?.name)) {
+  if (/\.(g?zip|tar|gz|rar)$/i.test(file.name)) {
     icon = <ArchiveOutlinedIcon color="primary" fontSize="large" />
   }
 
   // Set icon for media files
-  if (/\.(mp.|midi|mkv|avi)$/i.test(file?.name)) {
+  if (/\.(mp.|midi|mkv|avi)$/i.test(file.name)) {
     icon = <PlayCircleOutlineIcon color="primary" fontSize="large" />
   }
-  
+
   return (
     <Box
       sx={{
@@ -43,6 +49,7 @@ function FileAttachment (props) {
         <Avatar
           alt=""
           src={file.path}
+          ref={avatarRef}
           variant="rounded"
           sx={{
             m: .5,
@@ -59,18 +66,24 @@ function FileAttachment (props) {
           sx={{ display: 'inline-grid', alignItems: 'center' }}
         >
           <Typography variant="body2" noWrap>
-            {file?.name}
+            {file.name}
           </Typography>
           <Typography variant="caption" noWrap>
-            <b>{size}</b> | <b>{file?.extension?.toLowerCase()}</b>
+            <React.Fragment>
+
+              <b
+                // eslint-disable-next-line
+                // @ts-ignore
+              >{size}</b> | <b>{file?.extension ? file.extension.toLowerCase() : ''}</b>
+            </React.Fragment>
           </Typography>
         </Typography>
       </Box>
 
       <Typography component="div" sx={{ mr: -.5, textAlign: 'right' }}>
-        <IconButton 
-          disabled={disabled} 
-          onClick={() => hanfleRemoveFile(index)}
+        <IconButton
+          disabled={disabled}
+          onClick={(event): void => handleRemoveFile(event, index)}
         >
           <CloseIcon />
         </IconButton>
@@ -81,10 +94,10 @@ function FileAttachment (props) {
 
 FileAttachment.propTypes = {
   size: PropTypes.string.isRequired,
-  file: PropTypes.object.isRequired,
+  file: PropTypes.object,
   index: PropTypes.number.isRequired,
   disabled: PropTypes.bool,
-  hanfleRemoveFile: PropTypes.func.isRequired
+  handleRemoveFile: PropTypes.func.isRequired
 }
 
 export default FileAttachment

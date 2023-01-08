@@ -6,6 +6,57 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/)
 and this project adheres to [Semantic Versioning](http://semver.org/).
 
 
+## [1.0.0] - 2023-01-08
+
+### Added
+PlaceholderImageDimension
+- Support of typescript
+  
+- Make `onContextReady` callback optional
+
+- Add prop `showPlaceholderImage` to show or hide the placeholder image
+  
+- Add prop `PlaceholderGridProps` to customize the placeholder `Grid` props
+
+- Add prop `LabelsGridProps` to customize the labels `Grid` props
+
+### Changed
+
+- Typecript definition file has been improved
+
+- Update `@babel/core` dependency to v7.20.12 and `rollup` to v3.9.1
+
+- README.md improved by [@mikocot](https://github.com/mikocot) to show a real usecase of the library
+
+### Removed
+
+- `@mui/styles` has been removed
+
+### Fixed
+
+- Improve typo in README.md
+
+### Deprecated
+
+
+## [0.4.1] - 2023-01-05
+
+### Added
+
+- Add `onFilesChange` callback to return files according to getBase64 prop where input files change
+
+- Add project source map files
+
+### Changed
+
+### Removed
+
+### Fixed
+
+- Improve typo in README.md
+
+### Deprecated
+
 
 ## [0.4.0] - 2022-12-31
 
@@ -22,16 +73,16 @@ and this project adheres to [Semantic Versioning](http://semver.org/).
 ### Changed
 
 - Project npm packages updated
-  
-- `containerProps` prop replaced with `ContainerProps`
-
-- `bannerProps` prop replaced with `BannerProps`
 
 ### Removed
 
 ### Fixed
 
 ### Deprecated
+
+- `containerProps` prop replaced with `ContainerProps`
+
+- `bannerProps` prop replaced with `BannerProps`
 
 
 ## [0.3.0] - 2022-11-03

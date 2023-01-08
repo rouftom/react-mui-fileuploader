@@ -55,6 +55,9 @@ return (
     onError={handleFileUploadError}
     imageSrc={'path/to/custom/image'}
     BannerProps={{ elevation: 0, variant: "outlined" }}
+    showPlaceholderImage={true}
+    PlaceholderGridProps={{ md: 4 }}
+    LabelsGridProps={{ md: 8 }}
     onContextReady={context => {
       // access to component context here
     }}
@@ -71,34 +74,33 @@ return (
     }}
   />
 )
-
 ```
 
 ## 🎨 Possible application
 
 ```javascript
-import React, { useState } from "react";
-import { createRoot } from "react-dom/client";
-import FileUpload from "react-mui-fileuploader";
+import React, { useState } from "react"
+import { createRoot } from "react-dom/client"
+import FileUpload from "react-mui-fileuploader"
 
 function MuiFileUploader() {
-  const [filesToUpload, setFilesToUpload] = useState([]);
+  const [filesToUpload, setFilesToUpload] = useState([])
 
   const handleFilesChange = (files) => {
     // Update chosen files
-    setFilesToUpload([...files]);
+    setFilesToUpload([ ...files ])
   };
 
   const uploadFiles = () => {
     // Create a form and post it to server
-    let formData = new FormData();
-    filesToUpload.forEach((file) => formData.append("files", file));
+    let formData = new FormData()
+    filesToUpload.forEach((file) => formData.append("files", file))
 
     fetch("/file/upload", {
       method: "POST",
       body: formData
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -109,11 +111,11 @@ function MuiFileUploader() {
       />
       <button onClick={uploadFiles}>Upload</button>
     </>
-  );
+  )
 }
 
-const root = createRoot(document.getElementById("root"));
-root.render(<MuiFileUploader />);
+const root = createRoot(document.getElementById("root"))
+root.render(<MuiFileUploader />)
 ```
 
 [![Edit react-mui-fileuploader example](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/thirsty-visvesvaraya-r9u6ho?fontsize=14&hidenavigation=1&theme=dark)
@@ -126,6 +128,7 @@ root.render(<MuiFileUploader />);
 |    multiFile  	|  `boolean` 	|  `false` 	|  Multifile support. Default value  `true` 	|
 |    title  	|  `string` 	|  `false` 	|  Component title 	|
 |    header  	|  `string` 	|  `false` 	|  Banner component big title 	|
+|    showPlaceholderImage  	|  `boolean` 	|  `false` 	|   Show or hide placeholder image | 
 |    imageSrc  	|  `string` 	|  `false` 	|   Banner image placeholder source path | 
 |    imageSrcAlt  	|  `string` 	|  `false` 	|   Banner image placeholder label	|
 |    leftLabel  	|  `string` 	|  `false` 	|  Banner left label  | 
@@ -146,6 +149,8 @@ root.render(<MuiFileUploader />);
 |    BannerProps  	|  `object` 	|  `false` 	|  Banner props. Only MUI props are accepted 	| 
 |    ContainerProps  	|  `object` 	|  `false` 	|  Container props. Only MUI props are accepted 	| 
 |    PlaceholderImageDimension  	|  `object` 	|  `false` 	|  Dimensions (width and height) of the placeholder image. You can specify them in the properties `xs: {width: 64, height: 64}`, `sm: {width: 64, height: 64}`, `md: {width: 64, height: 64}`, `lg: {width: 64, height: 64}`, etc. |
+|    PlaceholderGridProps  	|  `object` 	|  `false` 	|  Customize the placeholder Grid `xs`, `sm`, `md`, `lg`, `xl` sizes |
+|    LabelsGridProps  	|  `object` 	|  `false` 	|  Customize the labels Grid `xs`, `sm`, `md`, `lg`, `xl` sizes |
 
 ## 😁 Authors
 
@@ -177,7 +182,7 @@ root.render(<MuiFileUploader />);
 
 MIT License
 
-Copyright (c) 2022 rouftom
+Copyright (c) 2023 rouftom
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
