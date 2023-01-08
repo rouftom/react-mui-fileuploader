@@ -71,7 +71,6 @@ function FileAttachment(props: FileAttachmentProps) {
             </Typography>
             <Typography variant="caption" noWrap>
               <React.Fragment>
-
                 <b
                   // eslint-disable-next-line
                   // @ts-ignore
@@ -95,10 +94,10 @@ function FileAttachment(props: FileAttachmentProps) {
 }
 
 FileAttachment.propTypes = {
-  size: PropTypes.string.isRequired,
+  size: PropTypes.string,
   file: PropTypes.object,
-  index: PropTypes.number.isRequired,
   disabled: PropTypes.bool,
+  index: PropTypes.number.isRequired,
   handleRemoveFile: PropTypes.func.isRequired
 }
 

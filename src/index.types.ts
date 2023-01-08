@@ -4,7 +4,7 @@ import {PaperTypeMap} from "@mui/material/Paper/Paper"
 
 export interface FileAttachmentProps {
   /** size of the attachment */
-  size: string | object,
+  size: string,
   /** file content of the attachment */
   file: FileProps,
   /** index of the attachment */

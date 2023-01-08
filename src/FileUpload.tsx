@@ -21,9 +21,7 @@ import { useTheme, styled } from '@mui/material/styles'
 // eslint-disable-next-line
 // @ts-ignore
 import uploadImage from '../public/Files And Folder_Two Color_2.svg'
-// eslint-disable-next-line
-// @ts-ignore
-import FileAttachment from "./FileAttachment.tsx"
+import FileAttachment from './FileAttachment'
 import {
   ExtendedFileProps,
   FileActionProps,
@@ -442,7 +440,7 @@ function FileUpload(props: FileUploadProps) {
             {files.length}
 
             {maxUploadFiles > 0 &&
-            `/${maxUploadFiles}`} file{files?.length > 0 && 's'} joined
+            `/${maxUploadFiles}`} file{files?.length > 1 && 's'} joined
           </Box>}
         </Typography>
 
@@ -478,7 +476,7 @@ function FileUpload(props: FileUploadProps) {
               sx={{
                 color: "#fff",
                 textAlign: 'center',
-                mt: { xs: -4, sm: 2 }
+                mt: { xs: showPlaceholderImage ? -4 : 0, sm: 2 }
               }}
               {...LabelsGridProps}
             >
