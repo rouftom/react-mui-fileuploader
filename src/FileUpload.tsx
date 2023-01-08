@@ -612,7 +612,6 @@ FileUpload.propTypes = {
   showPlaceholderImage: PropTypes.bool,
   LabelsGridProps: PropTypes.object,
   PlaceholderGridProps: PropTypes.object,
-  showPlaceholderImage: PropTypes.bool,
   placeholderImageDimension: PropTypes.object,
   PlaceholderImageDimension: PropTypes.object,
 }
