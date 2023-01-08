@@ -35,60 +35,62 @@ function FileAttachment(props: FileAttachmentProps) {
   }
 
   return (
-    <Box
-      sx={{
-        mb: 0,
-        display: 'flex',
-        alignItems: 'center',
-        '&:nth-of-type(even)': {
-          backgroundColor: theme.palette.action.hover
-        }
-      }}
-    >
-      <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
-        <Avatar
-          alt=""
-          src={file.path}
-          ref={avatarRef}
-          variant="rounded"
-          sx={{
-            m: .5,
-            width: 32,
-            height: 32,
-            display: 'flex',
-            background: 'transparent'
-          }}
-        >
-          {icon}
-        </Avatar>
-        <Typography
-          component="div"
-          sx={{ display: 'inline-grid', alignItems: 'center' }}
-        >
-          <Typography variant="body2" noWrap>
-            {file.name}
-          </Typography>
-          <Typography variant="caption" noWrap>
-            <React.Fragment>
+    <>
+      <Box
+        sx={{
+          mb: 0,
+          display: 'flex',
+          alignItems: 'center',
+          '&:nth-of-type(even)': {
+            backgroundColor: theme.palette.action.hover
+          }
+        }}
+      >
+        <Box sx={{ display: 'flex', flexGrow: 1, alignItems: 'center' }}>
+          <Avatar
+            alt=""
+            src={file.path}
+            ref={avatarRef}
+            variant="rounded"
+            sx={{
+              m: .5,
+              width: 32,
+              height: 32,
+              display: 'flex',
+              background: 'transparent'
+            }}
+          >
+            {icon}
+          </Avatar>
+          <Typography
+            component="div"
+            sx={{ display: 'inline-grid', alignItems: 'center' }}
+          >
+            <Typography variant="body2" noWrap>
+              {file.name}
+            </Typography>
+            <Typography variant="caption" noWrap>
+              <React.Fragment>
 
-              <b
-                // eslint-disable-next-line
-                // @ts-ignore
-              >{size}</b> | <b>{file?.extension ? file.extension.toLowerCase() : ''}</b>
-            </React.Fragment>
+                <b
+                  // eslint-disable-next-line
+                  // @ts-ignore
+                >{size}</b> | <b>{file?.extension ? file.extension.toLowerCase() : ''}</b>
+              </React.Fragment>
+            </Typography>
           </Typography>
+        </Box>
+
+        <Typography component="div" sx={{ mr: -.5, textAlign: 'right' }}>
+          <IconButton
+            disabled={disabled}
+            onClick={(event): void => handleRemoveFile(event, index)}
+          >
+            <CloseIcon />
+          </IconButton>
         </Typography>
       </Box>
-
-      <Typography component="div" sx={{ mr: -.5, textAlign: 'right' }}>
-        <IconButton
-          disabled={disabled}
-          onClick={(event): void => handleRemoveFile(event, index)}
-        >
-          <CloseIcon />
-        </IconButton>
-      </Typography>
-    </Box>
+    </>
   )
 }
 

@@ -17,13 +17,13 @@ import {
   useMediaQuery,
   TypographyProps, PaperProps,
 } from '@mui/material'
-// eslint-disable-next-line
-// @ts-ignore
-import FileAttachment from "./FileAttachment.tsx"
 import { useTheme, styled } from '@mui/material/styles'
 // eslint-disable-next-line
 // @ts-ignore
 import uploadImage from '../public/Files And Folder_Two Color_2.svg'
+// eslint-disable-next-line
+// @ts-ignore
+import FileAttachment from "./FileAttachment.tsx"
 import {
   ExtendedFileProps,
   FileActionProps,
@@ -639,7 +639,7 @@ FileUpload.defaultProps = {
   containerProps: {},
   ContainerProps: {},
   LabelsGridProps: {},
-  PlaceholderGridProps: '',
+  PlaceholderGridProps: {},
 } as Partial<PaperProps>
 
 export default FileUpload
