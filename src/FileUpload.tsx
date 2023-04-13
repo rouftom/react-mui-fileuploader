@@ -77,7 +77,7 @@ function FileUpload(props: FileUploadProps) {
     acceptedType,
     defaultFiles,
     onFilesChange,
-    maxUploadFiles = 0,
+    maxUploadFiles,
     containerProps,
     ContainerProps,
     onContextReady,
