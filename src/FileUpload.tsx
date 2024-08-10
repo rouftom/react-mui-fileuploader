@@ -176,7 +176,8 @@ function FileUpload(props: FileUploadProps) {
           // @ts-ignore
           const file = filesTab[i]
           const reader = new FileReader()
-          const extension = file.type.split('/')[1]
+          const fileSplit = file.type.split('.')
+          const extension = fileSplit?.[fileSplit.length - 1]
 
           if (maxFileSize && maxFileSize > 0) {
             if (file.size > (1024 * 1024 * maxFileSize)) {
