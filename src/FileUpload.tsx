@@ -58,41 +58,39 @@ const oneMega: number = 1024 * 1024
  * @param props FileUploadProps
  * @returns React.Component
  */
-function FileUpload(props: FileUploadProps) {
-  const {
-    title,
-    header,
-    onError,
-    disabled,
-    imageSrc,
-    getBase64,
-    imageSrcAlt,
-    multiFile,
-    leftLabel,
-    rightLabel,
-    buttonLabel,
-    maxFileSize,
-    bannerProps,
-    BannerProps,
-    acceptedType,
-    defaultFiles,
-    onFilesChange,
-    maxUploadFiles = 0,
-    containerProps,
-    ContainerProps,
-    onContextReady,
-    showPlaceholderImage,
-    errorSizeMessage,
-    allowedExtensions,
-    buttonRemoveLabel,
-    LabelsGridProps,
-    PlaceholderGridProps,
-    filesContainerHeight,
-    maxFilesContainerHeight,
-    placeholderImageDimension,
-    PlaceholderImageDimension,
-  } = props
-
+function FileUpload({
+  getBase64 = false,
+  multiFile = true,
+  maxFileSize = 0,
+  maxUploadFiles = 0,
+  acceptedType = '*/*',
+  defaultFiles = [],
+  allowedExtensions = [],
+  title = 'My awesome file uploader',
+  header = '>[Drag to drop]<',
+  leftLabel = 'or',
+  rightLabel = 'to select files',
+  buttonLabel = 'click here',
+  imageSrcAlt = 'Placeholder image',
+  maxFilesContainerHeight = 300,
+  showPlaceholderImage = true,
+  placeholderImageDimension = {},
+  PlaceholderImageDimension = {},
+  bannerProps = {},
+  BannerProps = {},
+  containerProps = {},
+  ContainerProps = {},
+  LabelsGridProps = {},
+  PlaceholderGridProps = {},
+  onError,
+  disabled,
+  imageSrc,
+  onFilesChange,
+  onContextReady,
+  errorSizeMessage,
+  buttonRemoveLabel,
+  filesContainerHeight,
+}: FileUploadProps) {
   const theme = useTheme()
 
   // noinspection JSDeprecatedSymbols
@@ -328,10 +326,12 @@ function FileUpload(props: FileUploadProps) {
 
       setAnimate(false)
 
-      setAction({
-        event,
-        files: event.dataTransfer?.files,
-      })
+      if (!disabled) {
+        setAction({
+          event,
+          files: event.dataTransfer?.files,
+        })
+      }
     }, [])
 
   /**
@@ -613,31 +613,5 @@ FileUpload.propTypes = {
   placeholderImageDimension: PropTypes.object,
   PlaceholderImageDimension: PropTypes.object,
 }
-
-FileUpload.defaultProps = {
-  getBase64: false,
-  multiFile: true,
-  maxFileSize: 0,
-  maxUploadFiles: 0,
-  acceptedType: "*/*",
-  defaultFiles: [],
-  allowedExtensions: [],
-  title: "My awesome file uploader",
-  header: ">[Drag to drop]<",
-  leftLabel: "or",
-  rightLabel: "to select files",
-  buttonLabel: "click here",
-  imageSrcAlt: "Placeholder image",
-  maxFilesContainerHeight: 300,
-  showPlaceholderImage: true,
-  placeholderImageDimension: {},
-  PlaceholderImageDimension: {},
-  bannerProps: {},
-  BannerProps: {},
-  containerProps: {},
-  ContainerProps: {},
-  LabelsGridProps: {},
-  PlaceholderGridProps: {},
-} as Partial<PaperProps>
 
 export default FileUpload
